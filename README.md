@@ -78,6 +78,21 @@ composer show mmitekk/drupal-custom-search
 2. `/admin/structure/block` → разместите блок **«Custom Search (inpramed-style)»** в регион **Footer** (или любой нижний регион темы).
 3. Откройте сайт, проскролльте в подвал — там поле поиска.
 
+### Если модуля нет в списке `/admin/modules`
+
+1. Проверьте, куда Composer положил пакет (начиная с 1.0.1 — всегда `web/modules/contrib/custom_search`):
+   ```bash
+   ls web/modules/contrib/ | grep -i custom
+   cat web/modules/contrib/custom_search/custom_search.info.yml
+   ```
+2. Если осталась старая папка `web/modules/contrib/drupal-custom-search` — удалите её после обновления до 1.0.1+:
+   ```bash
+   composer update mmitekk/drupal-custom-search
+   rm -rf web/modules/contrib/drupal-custom-search
+   ```
+3. Перестройте кэш (`drush cr` или «Конфигурация → Производительность → Очистить все кэши») и ищите в списке по слову `Custom`.
+4. Ошибка вида `Could not delete .../default.settings.php` при `composer require` — это права на scaffold-файл, на установку модуля она не влияет.
+
 ### Настройки: `/admin/config/search/custom-search`
 
 - Таб **«Main settings»**: плейсхолдер, мин. длина запроса, лимиты подсказок/выдачи, типы материалов, показ метки типа.
@@ -170,6 +185,20 @@ It should report `versions: 1.0.0` (or newer), **not** `dev-main`.
 1. `/admin/modules` → enable **Custom Search (inpramed-style)**.
 2. `/admin/structure/block` → place **“Custom Search (inpramed-style)”** into **Footer**.
 3. Scroll to the footer — the search field is there.
+
+### If the module is missing from `/admin/modules`
+
+1. Check where Composer put the package (since 1.0.1 — always `web/modules/contrib/custom_search`):
+   ```bash
+   ls web/modules/contrib/ | grep -i custom
+   cat web/modules/contrib/custom_search/custom_search.info.yml
+   ```
+2. If a stale `web/modules/contrib/drupal-custom-search` folder remains — remove it after updating to 1.0.1+:
+   ```bash
+   composer update mmitekk/drupal-custom-search
+   rm -rf web/modules/contrib/drupal-custom-search
+   ```
+3. Rebuild the cache (`drush cr` or “Configuration → Performance → Clear all caches”) and search the list for `Custom`.
 
 ### Settings: `/admin/config/search/custom-search`
 

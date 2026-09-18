@@ -4,6 +4,5 @@ description: 'Footer search with live suggestions (autocomplete) and a full resu
 core_version_requirement: ^10
 php: 8.1
 package: Search
-version: 1.0.0
 configure: custom_search.settings
 dependencies: {  }

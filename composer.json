@@ -12,6 +12,7 @@
   },
   "require-dev": {},
   "extra": {
+    "installer-name": "custom_search",
     "drupal": {
       "machine-name": "custom_search"
     },
