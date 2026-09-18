@@ -1,0 +1,15 @@
+<div class="custom-search-results">
+  {% for item in items %}
+    <article class="custom-search-results__item">
+      <h3 class="custom-search-results__title">
+        <a href="{{ item.url }}">{{ item.title }}</a>
+        {% if item.type_label %}
+          <span class="custom-search-results__type">{{ item.type_label }}</span>
+        {% endif %}
+      </h3>
+      {% if item.snippet %}
+        <p class="custom-search-results__snippet">{{ item.snippet }}</p>
+      {% endif %}
+    </article>
+  {% endfor %}
+</div>

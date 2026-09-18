@@ -1,0 +1,32 @@
+{
+  "name": "mmitekk/drupal-custom-search",
+  "description": "Custom Search for Drupal 10 — footer search with live suggestions (like inpramed.ru) and a full results page. Enter opens the results page.",
+  "type": "drupal-module",
+  "license": "GPL-2.0-or-later",
+  "homepage": "https://github.com/Mmitekk/drupal-custom-search",
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "require": {
+    "php": ">=8.1",
+    "drupal/core": "^10"
+  },
+  "require-dev": {},
+  "extra": {
+    "drupal": {
+      "machine-name": "custom_search"
+    },
+    "branch-alias": {
+      "dev-main": "1.0.x-dev"
+    }
+  },
+  "support": {
+    "issues": "https://github.com/Mmitekk/drupal-custom-search/issues",
+    "source": "https://github.com/Mmitekk/drupal-custom-search"
+  },
+  "authors": [
+    {
+      "name": "Mmitekk",
+      "homepage": "https://github.com/Mmitekk"
+    }
+  ]
+}

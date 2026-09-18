@@ -1,0 +1,36 @@
+custom_search.settings:
+  type: config_object
+  label: 'Custom Search settings'
+  mapping:
+    placeholder:
+      type: string
+      label: 'Placeholder'
+    min_length:
+      type: integer
+      label: 'Minimum query length'
+    limit:
+      type: integer
+      label: 'Suggestions limit'
+    results_limit:
+      type: integer
+      label: 'Results per page'
+    bundles:
+      type: sequence
+      label: 'Allowed content types'
+      sequence:
+        type: string
+    empty_text_ru:
+      type: text
+      label: 'Empty text (RU)'
+    empty_text_en:
+      type: text
+      label: 'Empty text (EN)'
+    header_ru:
+      type: string
+      label: 'Results header (RU)'
+    header_en:
+      type: string
+      label: 'Results header (EN)'
+    show_type_label:
+      type: boolean
+      label: 'Show type label'

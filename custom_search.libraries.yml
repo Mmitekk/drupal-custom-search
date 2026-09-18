@@ -1,0 +1,11 @@
+custom_search/search:
+  version: VERSION
+  css:
+    theme:
+      css/custom-search.css: {}
+  js:
+    js/custom-search.js: {}
+  dependencies:
+    - core/once
+    - core/drupal
+    - core/drupalSettings

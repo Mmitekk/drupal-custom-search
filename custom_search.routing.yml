@@ -1,0 +1,26 @@
+custom_search.suggest:
+  path: '/custom-search/suggest'
+  defaults:
+    _controller: '\Drupal\custom_search\Controller\SuggestController::suggest'
+  methods: [GET]
+  requirements:
+    _permission: 'access content'
+
+custom_search.results:
+  path: '/custom-search'
+  defaults:
+    _controller: '\Drupal\custom_search\Controller\ResultsController::results'
+    _title_callback: '\Drupal\custom_search\Controller\ResultsController::title'
+  methods: [GET]
+  requirements:
+    _permission: 'access content'
+
+custom_search.settings:
+  path: '/admin/config/search/custom-search'
+  defaults:
+    _form: '\Drupal\custom_search\Form\SettingsForm'
+    _title: 'Custom Search settings'
+  requirements:
+    _permission: 'administer custom search'
+  options:
+    _admin_route: TRUE

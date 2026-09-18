@@ -1,0 +1,6 @@
+custom_search.settings:
+  title: 'Custom Search'
+  description: 'Configure footer live search (inpramed-style).'
+  parent: search.settings
+  route_name: custom_search.settings
+  weight: 10

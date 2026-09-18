@@ -1,0 +1,4 @@
+<form action="{{ path('custom_search.results') }}" method="get" role="search" class="custom-search-page-form">
+  <input type="text" name="q" value="{{ q }}" placeholder="{{ placeholder }}" aria-label="{{ placeholder }}" class="custom-search-page-form__input" />
+  <button type="submit" class="custom-search-page-form__submit">{{ 'Search'|t }}</button>
+</form>

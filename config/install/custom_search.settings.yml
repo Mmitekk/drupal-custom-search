@@ -1,0 +1,10 @@
+placeholder: 'Поиск по сайту…'
+min_length: 2
+limit: 8
+results_limit: 10
+bundles: {  }
+empty_text_ru: 'Ничего не найдено по запросу «@q». Попробуйте изменить запрос.'
+empty_text_en: 'Nothing found for "@q". Try a different query.'
+header_ru: 'Результаты поиска'
+header_en: 'Search results'
+show_type_label: true
