@@ -15,7 +15,12 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ResultsController extends ControllerBase {
 
-  protected EntityTypeManagerInterface $entityTypeManager;
+  /**
+   * Entity type manager (inherited untyped property from ControllerBase).
+   *
+   * NOTE: do not redeclare $entityTypeManager with a type here — the parent
+   * class already defines it untyped and PHP fatals on narrowing.
+   */
 
   public function __construct(EntityTypeManagerInterface $entity_type_manager) {
     $this->entityTypeManager = $entity_type_manager;
