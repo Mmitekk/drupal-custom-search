@@ -1,20 +1,44 @@
 /* Custom Search — footer search + dropdown + results page. */
 
-/* Sticky bottom bar (optional, enabled in block settings). */
+/* Sticky bottom bar (optional, enabled in block settings).
+   Light site style: white bar, grey field, brand-red focus. */
 .custom-search-bar {
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
   z-index: 200;
-  background: rgba(10, 28, 27, .97);
-  border-top: 1px solid rgba(255, 255, 255, .12);
-  box-shadow: 0 -12px 40px -18px rgba(0, 0, 0, .55);
+  background: #ffffff;
+  border-top: 1px solid #e7e7e7;
+  box-shadow: 0 -10px 30px -18px rgba(0, 0, 0, .25);
   padding: 10px 16px;
 }
 .custom-search-bar .custom-search {
-  max-width: 720px;
+  max-width: 960px;
   margin: 0 auto;
+}
+.custom-search-bar .custom-search__input {
+  background: #f2f3f4;
+  border: 1px solid #e2e2e2;
+  color: #222222;
+}
+.custom-search-bar .custom-search__input::placeholder {
+  color: #8a8a8a;
+}
+.custom-search-bar .custom-search__input:focus {
+  border-color: #ea184f;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(234, 24, 79, .12);
+}
+.custom-search-bar .custom-search__icon {
+  color: #999999;
+}
+.custom-search-bar .custom-search__kbd {
+  color: #999999;
+}
+.custom-search-bar .custom-search__kbd span {
+  border-color: #dddddd;
+  background: #ffffff;
 }
 body:has(.custom-search-bar) {
   padding-bottom: 62px;
