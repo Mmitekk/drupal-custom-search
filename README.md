@@ -104,6 +104,8 @@ composer show mmitekk/drupal-custom-search
 - Ввод в поле → подсказки (`/searching/suggest?q=…` возвращает JSON `{results: [{type,title,description,path}]}`).
 - `Enter` → `/searching?q=…`.
 - Типы подсказок: `service` (услуги), `doctor` (врачи), `page` (разделы), `info` (статьи/FAQ). Маппинг по machine name типа ноды (настраивается кодом в `SuggestController::mapType()`).
+- В настройках блока есть опция «Закрепить внизу экрана» (по умолчанию включена): панель поиска висит снизу на всех страницах.
+- Проверка подсказок: откройте в браузере `/searching/suggest?q=хомут` — должен вернуться JSON.
 
 ### Обновление на новый релиз
 
@@ -211,6 +213,8 @@ It should report `versions: 1.0.0` (or newer), **not** `dev-main`.
 - Typing queries `/searching/suggest?q=…` → JSON `{results: [{type,title,description,path}]}`.
 - `Enter` → `/searching?q=…`.
 - Suggestion types: `service`, `doctor`, `page`, `info` (mapped from node bundle in `SuggestController::mapType()`).
+- The block has a “Pin to the bottom of the screen” option (on by default): a sticky search bar on every page.
+- Suggestions check: open `/searching/suggest?q=test` in the browser — JSON is expected.
 
 ### Update
 

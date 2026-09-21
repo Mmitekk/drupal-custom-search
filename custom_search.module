@@ -18,6 +18,7 @@ function custom_search_theme($existing, $type, $theme, $path): array {
         'suggest_url' => NULL,
         'results_url' => NULL,
         'min_length' => 2,
+        'sticky' => TRUE,
       ],
       'template' => 'custom-search-block',
     ],

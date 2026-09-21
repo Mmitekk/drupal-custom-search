@@ -96,7 +96,29 @@ class SuggestController extends ControllerBase {
       ->condition('body.value', $q, 'CONTAINS');
     $query->condition($or);
 
-    $ids = $query->execute();
+    try {
+      $ids = $query->execute();
+    }
+    catch (\Exception $e) {
+      // Fallback to title-only search (e.g. when no bundle has a body field,
+      // the body.value condition makes the whole query fail).
+      \Drupal::logger('custom_search')->warning('Full-text suggest query failed, falling back to title search for "@q".', ['@q' => $q]);
+      $fallback = $storage->getQuery()
+        ->condition('status', 1)
+        ->accessCheck(TRUE)
+        ->range(0, $limit)
+        ->sort('changed', 'DESC');
+      if (!empty($allowed)) {
+        $fallback->condition('type', $allowed, 'IN');
+      }
+      $fallback->condition('title', $q, 'CONTAINS');
+      try {
+        $ids = $fallback->execute();
+      }
+      catch (\Exception) {
+        return [];
+      }
+    }
     if (empty($ids)) {
       return [];
     }

@@ -1,3 +1,4 @@
+{% if sticky %}<div class="custom-search-bar" data-custom-search-bar>{% endif %}
 <form class="custom-search" data-custom-search action="{{ results_url }}" method="get" role="search">
   <svg class="custom-search__icon" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M16 16l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
   <input
@@ -15,3 +16,4 @@
   <span class="custom-search__kbd"><span data-custom-search-kbd>Ctrl</span><span>K</span></span>
   <div class="custom-search__results" data-custom-search-results></div>
 </form>
+{% if sticky %}</div>{% endif %}

@@ -80,7 +80,28 @@ class ResultsController extends ControllerBase {
       ->condition('body.value', $q, 'CONTAINS');
     $query->condition($or);
 
-    $ids = $query->execute();
+    try {
+      $ids = $query->execute();
+    }
+    catch (\Exception) {
+      // Fallback to title-only search (e.g. when no bundle has a body field).
+      \Drupal::logger('custom_search')->warning('Full-text results query failed, falling back to title search for "@q".', ['@q' => $q]);
+      $fallback = $storage->getQuery()
+        ->condition('status', 1)
+        ->accessCheck(TRUE)
+        ->pager($perPage)
+        ->sort('changed', 'DESC');
+      if (!empty($allowed)) {
+        $fallback->condition('type', $allowed, 'IN');
+      }
+      $fallback->condition('title', $q, 'CONTAINS');
+      try {
+        $ids = $fallback->execute();
+      }
+      catch (\Exception) {
+        $ids = [];
+      }
+    }
     $nodes = $ids ? $storage->loadMultiple($ids) : [];
 
     $items = [];

@@ -32,6 +32,7 @@ class CustomSearchBlock extends BlockBase implements ContainerFactoryPluginInter
   public function defaultConfiguration() {
     return [
       'placeholder_override' => '',
+      'sticky' => TRUE,
     ] + parent::defaultConfiguration();
   }
 
@@ -44,6 +45,12 @@ class CustomSearchBlock extends BlockBase implements ContainerFactoryPluginInter
       '#title' => $this->t('Placeholder override (leave empty to use global)'),
       '#default_value' => $this->configuration['placeholder_override'] ?? '',
     ];
+    $form['sticky'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Pin the search bar to the bottom of the screen (sticky)'),
+      '#description' => $this->t('Shows a fixed search bar at the bottom of every page the block is visible on.'),
+      '#default_value' => !empty($this->configuration['sticky']),
+    ];
     return $form;
   }
 
@@ -52,6 +59,7 @@ class CustomSearchBlock extends BlockBase implements ContainerFactoryPluginInter
    */
   public function blockSubmit($form, FormStateInterface $form_state) {
     $this->configuration['placeholder_override'] = $form_state->getValue('placeholder_override');
+    $this->configuration['sticky'] = (bool) $form_state->getValue('sticky');
   }
 
   /**
@@ -80,6 +88,7 @@ class CustomSearchBlock extends BlockBase implements ContainerFactoryPluginInter
       '#suggest_url' => $suggest_url,
       '#results_url' => $results_url,
       '#min_length' => $minLength,
+      '#sticky' => !empty($this->configuration['sticky']),
       '#attached' => [
         'library' => ['custom_search/search'],
         'drupalSettings' => [

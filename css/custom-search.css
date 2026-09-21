@@ -1,4 +1,29 @@
 /* Custom Search — footer search + dropdown + results page. */
+
+/* Sticky bottom bar (optional, enabled in block settings). */
+.custom-search-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 200;
+  background: rgba(10, 28, 27, .97);
+  border-top: 1px solid rgba(255, 255, 255, .12);
+  box-shadow: 0 -12px 40px -18px rgba(0, 0, 0, .55);
+  padding: 10px 16px;
+}
+.custom-search-bar .custom-search {
+  max-width: 720px;
+  margin: 0 auto;
+}
+body:has(.custom-search-bar) {
+  padding-bottom: 62px;
+}
+@media (max-width: 680px) {
+  .custom-search-bar {
+    padding: 8px 12px;
+  }
+}
 .custom-search {
   position: relative;
   flex: 1;
