@@ -105,30 +105,39 @@ class CustomSearchBlock extends BlockBase implements ContainerFactoryPluginInter
       ],
     ];
 
-    // Inline the critical assets as well, so the block looks and works even
-    // when the library discovery cache is stale (the library above stays as
-    // the primary path for healthy sites; once() guards double init).
-    $module_root = dirname(__DIR__, 3);
-    $css_file = $module_root . '/css/custom-search.css';
-    if (is_readable($css_file)) {
+    // Direct file tags as well, so the block looks and works even when the
+    // library discovery cache is stale. Plain link/script tags cannot be
+    // mangled by HTML-escaping (unlike inlined code), and once() guards the
+    // double init when the library above also loads on healthy sites.
+    try {
+      $module_path = \Drupal::service('extension.list.module')->getPath('custom_search');
+      $base_path = rtrim(\Drupal::request()->getBasePath(), '/');
+      $css_url = $base_path . '/' . $module_path . '/css/custom-search.css?v=1.0.10';
+      $js_url = $base_path . '/' . $module_path . '/js/custom-search.js?v=1.0.10';
       $build['#attached']['html_head'][] = [
         [
-          '#tag' => 'style',
-          '#value' => (string) file_get_contents($css_file),
+          '#tag' => 'link',
+          '#attributes' => [
+            'rel' => 'stylesheet',
+            'media' => 'all',
+            'href' => $css_url,
+          ],
         ],
-        'custom_search_inline_css',
+        'custom_search_ext_css',
       ];
-    }
-    $js_file = $module_root . '/js/custom-search.js';
-    if (is_readable($js_file)) {
-      // Deferred via DOMContentLoaded so Drupal/once already exist.
       $build['#attached']['html_head'][] = [
         [
           '#tag' => 'script',
-          '#value' => 'window.addEventListener("DOMContentLoaded",function(){' . (string) file_get_contents($js_file) . '});',
+          '#attributes' => [
+            'src' => $js_url,
+            'defer' => TRUE,
+          ],
         ],
-        'custom_search_inline_js',
+        'custom_search_ext_js',
       ];
+    }
+    catch (\Exception) {
+      // Discovery/request unavailable (e.g. CLI render): library above stays.
     }
 
     return $build;
