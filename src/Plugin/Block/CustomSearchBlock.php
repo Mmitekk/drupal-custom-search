@@ -109,11 +109,12 @@ class CustomSearchBlock extends BlockBase implements ContainerFactoryPluginInter
     // library discovery cache is stale. Plain link/script tags cannot be
     // mangled by HTML-escaping (unlike inlined code), and once() guards the
     // double init when the library above also loads on healthy sites.
+    // Dynamic colors from settings ride along in a tiny style tag.
     try {
       $module_path = \Drupal::service('extension.list.module')->getPath('custom_search');
       $base_path = rtrim(\Drupal::request()->getBasePath(), '/');
-      $css_url = $base_path . '/' . $module_path . '/css/custom-search.css?v=1.0.10';
-      $js_url = $base_path . '/' . $module_path . '/js/custom-search.js?v=1.0.10';
+      $css_url = $base_path . '/' . $module_path . '/css/custom-search.css?v=1.0.11';
+      $js_url = $base_path . '/' . $module_path . '/js/custom-search.js?v=1.0.11';
       $build['#attached']['html_head'][] = [
         [
           '#tag' => 'link',
@@ -135,6 +136,13 @@ class CustomSearchBlock extends BlockBase implements ContainerFactoryPluginInter
         ],
         'custom_search_ext_js',
       ];
+      $build['#attached']['html_head'][] = [
+        [
+          '#tag' => 'style',
+          '#value' => $this->styleVars(),
+        ],
+        'custom_search_vars',
+      ];
     }
     catch (\Exception) {
       // Discovery/request unavailable (e.g. CLI render): library above stays.
@@ -145,6 +153,36 @@ class CustomSearchBlock extends BlockBase implements ContainerFactoryPluginInter
 
   protected function getModuleConfig() {
     return \Drupal::config('custom_search.settings');
+  }
+
+  /**
+   * Builds a sanitized :root CSS variables string from style settings.
+   */
+  protected function styleVars(): string {
+    $config = $this->getModuleConfig();
+    $defaults = [
+      '--cs-accent' => '#ea184f',
+      '--cs-dropdown-bg' => '#ffffff',
+      '--cs-text' => '#4c6767',
+      '--cs-highlight' => '#fde3ea',
+    ];
+    $map = [
+      'style_accent' => '--cs-accent',
+      'style_dropdown_bg' => '--cs-dropdown-bg',
+      'style_text' => '--cs-text',
+      'style_highlight' => '--cs-highlight',
+    ];
+    foreach ($map as $key => $var) {
+      $value = $config->get($key);
+      if (is_string($value) && preg_match('/^#[0-9a-fA-F]{6}$/', $value)) {
+        $defaults[$var] = $value;
+      }
+    }
+    $out = ':root{';
+    foreach ($defaults as $var => $value) {
+      $out .= $var . ':' . $value . ';';
+    }
+    return $out . '}';
   }
 
 }

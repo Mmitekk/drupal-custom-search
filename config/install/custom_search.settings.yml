@@ -8,3 +8,7 @@ empty_text_en: 'Nothing found for "@q". Try a different query.'
 header_ru: 'Результаты поиска'
 header_en: 'Search results'
 show_type_label: true
+style_accent: '#ea184f'
+style_dropdown_bg: '#ffffff'
+style_text: '#4c6767'
+style_highlight: '#fde3ea'

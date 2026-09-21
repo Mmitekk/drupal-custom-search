@@ -7,6 +7,9 @@
           <span class="custom-search-results__type">{{ item.type_label }}</span>
         {% endif %}
       </h3>
+      {% if item.path %}
+        <div class="custom-search-results__path">{{ item.path }}</div>
+      {% endif %}
       {% if item.snippet %}
         <p class="custom-search-results__snippet">{{ item.snippet }}</p>
       {% endif %}

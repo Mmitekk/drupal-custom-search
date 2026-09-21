@@ -26,7 +26,7 @@
   color: #8a8a8a;
 }
 .custom-search-bar .custom-search__input:focus {
-  border-color: #ea184f;
+  border-color: var(--cs-accent, #ea184f);
   background: #ffffff;
   box-shadow: 0 0 0 3px rgba(234, 24, 79, .12);
 }
@@ -101,7 +101,7 @@ body:has(.custom-search-bar) {
   left: 0;
   right: 0;
   bottom: calc(100% + 10px);
-  background: #fff;
+  background: var(--cs-dropdown-bg, #fff);
   color: #0a4b4b;
   border: 1px solid rgba(10, 75, 75, .12);
   border-radius: 14px;
@@ -139,7 +139,7 @@ body:has(.custom-search-bar) {
   font-size: 11px;
   letter-spacing: .1em;
   text-transform: uppercase;
-  color: #12a4a4;
+  color: var(--cs-accent, #ea184f);
   font-weight: 700;
 }
 .cs-cat::before {
@@ -150,27 +150,28 @@ body:has(.custom-search-bar) {
   display: inline-grid;
   place-items: center;
   border-radius: 6px;
-  background: rgba(18, 164, 164, .12);
-  border: 1px solid rgba(18, 164, 164, .3);
+  color: var(--cs-accent, #ea184f);
+  background: transparent;
+  border: 1px solid var(--cs-accent, #ea184f);
   font-size: 13px;
   line-height: 1;
 }
 .cs-body { display: flex; flex-direction: column; min-width: 0; flex: 1; }
-.cs-title { font-weight: 600; font-size: 14px; }
-.cs-desc { font-size: 12.5px; color: #4c6767; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.cs-arrow { color: #12a4a4; font-size: 18px; }
+.cs-title { font-weight: 600; font-size: 14px; color: var(--cs-accent, #ea184f); }
+.cs-desc { font-size: 12.5px; color: var(--cs-text, #4c6767); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cs-arrow { color: var(--cs-accent, #ea184f); font-size: 18px; }
 .cs-foot {
   display: flex;
   gap: 14px;
   padding: 8px 12px;
   border-top: 1px solid rgba(10, 75, 75, .1);
   font-size: 12px;
-  color: #4c6767;
+  color: var(--cs-text, #4c6767);
 }
-.cs-empty { padding: 14px; font-size: 13.5px; color: #4c6767; }
+.cs-empty { padding: 14px; font-size: 13.5px; color: var(--cs-text, #4c6767); }
 .custom-search__results mark,
 .custom-search-results mark {
-  background: #fff3bf;
+  background: var(--cs-highlight, #fde3ea);
   padding: 0 1px;
   border-radius: 2px;
 }
@@ -185,34 +186,60 @@ body:has(.custom-search-bar) {
   border-radius: 10px;
   font-size: 15px;
 }
+.custom-search-page-form__input:focus {
+  outline: none;
+  border-color: var(--cs-accent, #ea184f);
+  box-shadow: 0 0 0 3px rgba(234, 24, 79, .12);
+}
 .custom-search-page-form__submit {
   padding: 12px 20px;
   border: none;
   border-radius: 10px;
-  background: #0a4b4b;
+  background: var(--cs-accent, #ea184f);
   color: #fff;
   font-weight: 700;
   cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+}
+.custom-search-page-form__submit:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px -12px var(--cs-accent, #ea184f);
 }
 .custom-search-results__item {
-  padding: 16px 0;
-  border-bottom: 1px solid rgba(10, 75, 75, .1);
+  padding: 18px 20px;
+  margin-bottom: 14px;
+  border: 1px solid rgba(10, 75, 75, .1);
+  border-radius: 14px;
+  background: var(--cs-dropdown-bg, #fff);
+  transition: box-shadow .25s, transform .25s;
 }
-.custom-search-results__title { margin: 0 0 6px; font-size: 18px; }
-.custom-search-results__title a { color: #0a4b4b; }
+.custom-search-results__item:hover {
+  box-shadow: 0 18px 44px -24px rgba(6, 44, 44, .4);
+  transform: translateY(-2px);
+}
+.custom-search-results__title { margin: 0 0 6px; font-size: 19px; }
+.custom-search-results__title a { color: var(--cs-accent, #ea184f); text-decoration: none; }
+.custom-search-results__title a:hover { text-decoration: underline; }
 .custom-search-results__type {
   font-size: 11px;
   font-weight: 700;
   letter-spacing: .06em;
   text-transform: uppercase;
-  color: #12a4a4;
-  border: 1px solid rgba(18, 164, 164, .35);
+  color: var(--cs-accent, #ea184f);
+  border: 1px solid var(--cs-accent, #ea184f);
   border-radius: 100px;
   padding: 2px 8px;
   margin-left: 8px;
   vertical-align: middle;
+  white-space: nowrap;
 }
-.custom-search-results__snippet { margin: 0; color: #4c6767; }
+.custom-search-results__path {
+  font-size: 12.5px;
+  color: var(--cs-text, #4c6767);
+  margin: 0 0 6px;
+  overflow-wrap: break-word;
+}
+.custom-search-results__snippet { margin: 0; color: var(--cs-text, #4c6767); }
 
 /* Light backgrounds (e.g. header): keep readable. */
 .region-header .custom-search__input,

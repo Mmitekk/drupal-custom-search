@@ -48,6 +48,13 @@ class ResultsController extends ControllerBase {
     $lang = $this->languageManager()->getCurrentLanguage()->getId();
 
     $build = [];
+    $build['#attached']['html_head'][] = [
+      [
+        '#tag' => 'style',
+        '#value' => $this->styleVars($config),
+      ],
+      'custom_search_vars',
+    ];
     $build['form'] = [
       '#theme' => 'custom_search_results_form',
       '#q' => $q,
@@ -118,6 +125,7 @@ class ResultsController extends ControllerBase {
       $items[] = [
         'title' => $this->highlight($node->label(), $q),
         'url' => $url,
+        'path' => $url->toString(),
         'snippet' => $this->highlight($this->snippet($node, $q), $q),
         'type_label' => $config->get('show_type_label') ? $this->typeLabel($node->bundle()) : NULL,
       ];
@@ -201,6 +209,38 @@ class ResultsController extends ControllerBase {
       return (string) $map['info'];
     }
     return (string) $map['page'];
+  }
+
+  /**
+   * Builds a sanitized :root CSS variables string from style settings.
+   *
+   * @param \Drupal\Core\Config\ImmutableConfig $config
+   *   The custom_search.settings config object.
+   */
+  protected function styleVars($config): string {
+    $defaults = [
+      '--cs-accent' => '#ea184f',
+      '--cs-dropdown-bg' => '#ffffff',
+      '--cs-text' => '#4c6767',
+      '--cs-highlight' => '#fde3ea',
+    ];
+    $map = [
+      'style_accent' => '--cs-accent',
+      'style_dropdown_bg' => '--cs-dropdown-bg',
+      'style_text' => '--cs-text',
+      'style_highlight' => '--cs-highlight',
+    ];
+    foreach ($map as $key => $var) {
+      $value = $config->get($key);
+      if (is_string($value) && preg_match('/^#[0-9a-fA-F]{6}$/', $value)) {
+        $defaults[$var] = $value;
+      }
+    }
+    $out = ':root{';
+    foreach ($defaults as $var => $value) {
+      $out .= $var . ':' . $value . ';';
+    }
+    return $out . '}';
   }
 
 }

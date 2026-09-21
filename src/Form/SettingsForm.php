@@ -142,6 +142,34 @@ class SettingsForm extends ConfigFormBase {
       '#rows' => 2,
     ];
 
+    // Style tab — colors for the dropdown and the results page.
+    $form['style'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Оформление (Style)'),
+      '#group' => 'tabs',
+      '#description' => $this->t('Colors of suggestion titles, links, badges, focus ring, buttons and match highlighting.'),
+    ];
+    $form['style']['style_accent'] = [
+      '#type' => 'color',
+      '#title' => $this->t('Accent color (titles, links, badges, buttons)'),
+      '#default_value' => $config->get('style_accent') ?: '#ea184f',
+    ];
+    $form['style']['style_dropdown_bg'] = [
+      '#type' => 'color',
+      '#title' => $this->t('Dropdown background'),
+      '#default_value' => $config->get('style_dropdown_bg') ?: '#ffffff',
+    ];
+    $form['style']['style_text'] = [
+      '#type' => 'color',
+      '#title' => $this->t('Descriptions/snippets text color'),
+      '#default_value' => $config->get('style_text') ?: '#4c6767',
+    ];
+    $form['style']['style_highlight'] = [
+      '#type' => 'color',
+      '#title' => $this->t('Match highlight background (<mark>)'),
+      '#default_value' => $config->get('style_highlight') ?: '#fde3ea',
+    ];
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -160,6 +188,10 @@ class SettingsForm extends ConfigFormBase {
       ->set('empty_text_ru', $form_state->getValue('empty_text_ru'))
       ->set('header_en', $form_state->getValue('header_en'))
       ->set('empty_text_en', $form_state->getValue('empty_text_en'))
+      ->set('style_accent', $form_state->getValue('style_accent'))
+      ->set('style_dropdown_bg', $form_state->getValue('style_dropdown_bg'))
+      ->set('style_text', $form_state->getValue('style_text'))
+      ->set('style_highlight', $form_state->getValue('style_highlight'))
       ->save();
     parent::submitForm($form, $form_state);
   }

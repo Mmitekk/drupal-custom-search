@@ -34,3 +34,15 @@ custom_search.settings:
     show_type_label:
       type: boolean
       label: 'Show type label'
+    style_accent:
+      type: string
+      label: 'Accent color'
+    style_dropdown_bg:
+      type: string
+      label: 'Dropdown background'
+    style_text:
+      type: string
+      label: 'Descriptions text color'
+    style_highlight:
+      type: string
+      label: 'Match highlight background'
