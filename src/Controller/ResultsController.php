@@ -48,6 +48,27 @@ class ResultsController extends ControllerBase {
     $lang = $this->languageManager()->getCurrentLanguage()->getId();
 
     $build = [];
+    $build['#attached']['library'][] = 'custom_search/search';
+    // Direct stylesheet tag as well: it cannot be mangled by escaping and
+    // does not depend on the library discovery cache.
+    try {
+      $module_path = \Drupal::service('extension.list.module')->getPath('custom_search');
+      $base_path = rtrim(\Drupal::request()->getBasePath(), '/');
+      $build['#attached']['html_head'][] = [
+        [
+          '#tag' => 'link',
+          '#attributes' => [
+            'rel' => 'stylesheet',
+            'media' => 'all',
+            'href' => $base_path . '/' . $module_path . '/css/custom-search.css?v=1.0.12',
+          ],
+        ],
+        'custom_search_ext_css',
+      ];
+    }
+    catch (\Exception) {
+      // Discovery/request unavailable: library above stays.
+    }
     $build['#attached']['html_head'][] = [
       [
         '#tag' => 'style',
@@ -125,7 +146,6 @@ class ResultsController extends ControllerBase {
       $items[] = [
         'title' => $this->highlight($node->label(), $q),
         'url' => $url,
-        'path' => $url->toString(),
         'snippet' => $this->highlight($this->snippet($node, $q), $q),
         'type_label' => $config->get('show_type_label') ? $this->typeLabel($node->bundle()) : NULL,
       ];

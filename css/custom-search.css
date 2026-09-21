@@ -233,12 +233,6 @@ body:has(.custom-search-bar) {
   vertical-align: middle;
   white-space: nowrap;
 }
-.custom-search-results__path {
-  font-size: 12.5px;
-  color: var(--cs-text, #4c6767);
-  margin: 0 0 6px;
-  overflow-wrap: break-word;
-}
 .custom-search-results__snippet { margin: 0; color: var(--cs-text, #4c6767); }
 
 /* Light backgrounds (e.g. header): keep readable. */
