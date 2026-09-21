@@ -1,5 +1,5 @@
 custom_search.suggest:
-  path: '/custom-search/suggest'
+  path: '/searching/suggest'
   defaults:
     _controller: '\Drupal\custom_search\Controller\SuggestController::suggest'
   methods: [GET]
@@ -7,7 +7,7 @@ custom_search.suggest:
     _permission: 'access content'
 
 custom_search.results:
-  path: '/custom-search'
+  path: '/searching'
   defaults:
     _controller: '\Drupal\custom_search\Controller\ResultsController::results'
     _title_callback: '\Drupal\custom_search\Controller\ResultsController::title'

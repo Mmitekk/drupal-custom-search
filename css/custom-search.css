@@ -83,12 +83,28 @@
   background: #eef6f6;
 }
 .cs-cat {
-  padding: 8px 12px 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px 4px;
   font-size: 11px;
   letter-spacing: .1em;
   text-transform: uppercase;
   color: #12a4a4;
   font-weight: 700;
+}
+.cs-cat::before {
+  content: "+";
+  flex: none;
+  width: 18px;
+  height: 18px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 6px;
+  background: rgba(18, 164, 164, .12);
+  border: 1px solid rgba(18, 164, 164, .3);
+  font-size: 13px;
+  line-height: 1;
 }
 .cs-body { display: flex; flex-direction: column; min-width: 0; flex: 1; }
 .cs-title { font-weight: 600; font-size: 14px; }

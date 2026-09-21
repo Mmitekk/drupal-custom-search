@@ -23,7 +23,7 @@ Drupal 10 module that adds a footer search with live suggestions: type a query �
 - Блок **«Custom Search»** для подвала сайта.
 - При вводе запроса под полем появляются **подсказки**: название + короткое описание + категория (`Услуги / Врачи / Разделы / Инфо`), совпадения подсвечены `<mark>`.
 - Навигация: `↑` / `↓` — выбор, `Enter` — открыть подсказку или страницу выдачи, `Esc` — закрыть, `Ctrl/⌘ + K` — фокус на поиске, клик мимо — закрыть.
-- Страница выдачи **`/custom-search?q=…`**: форма поиска + список результатов + пагинация + подсветка совпадений.
+- Страница выдачи **`/searching?q=…`**: форма поиска + список результатов + пагинация + подсветка совпадений.
 - Источник — опубликованные ноды (`title` + `body`), с фильтром по типам материалов и лимитами.
 - Задержка запросов **180 мс** (debounce) + отмена предыдущего запроса (`AbortController`).
 
@@ -101,8 +101,8 @@ composer show mmitekk/drupal-custom-search
 
 ### Использование
 
-- Ввод в поле → подсказки (`/custom-search/suggest?q=…` возвращает JSON `{results: [{type,title,description,path}]}`).
-- `Enter` → `/custom-search?q=…`.
+- Ввод в поле → подсказки (`/searching/suggest?q=…` возвращает JSON `{results: [{type,title,description,path}]}`).
+- `Enter` → `/searching?q=…`.
 - Типы подсказок: `service` (услуги), `doctor` (врачи), `page` (разделы), `info` (статьи/FAQ). Маппинг по machine name типа ноды (настраивается кодом в `SuggestController::mapType()`).
 
 ### Обновление на новый релиз
@@ -132,7 +132,7 @@ composer require mmitekk/drupal-custom-search:1.0.0
 - A **“Custom Search”** block for the site footer.
 - While typing, a dropdown suggests pages: title + snippet + category (`Services / Doctors / Pages / Info`), matches highlighted with `<mark>`.
 - Keyboard: `↑`/`↓` to pick, `Enter` opens the suggestion or the results page, `Esc` closes, `Ctrl/⌘ + K` focuses search, click-outside closes.
-- Results page **`/custom-search?q=…`**: search form + results + pager + highlighting.
+- Results page **`/searching?q=…`**: search form + results + pager + highlighting.
 - Source: published nodes (`title` + `body`), filterable by bundles, with limits.
 - **180 ms** debounce + previous-request cancel (`AbortController`).
 
@@ -208,8 +208,8 @@ It should report `versions: 1.0.0` (or newer), **not** `dev-main`.
 
 ### Usage
 
-- Typing queries `/custom-search/suggest?q=…` → JSON `{results: [{type,title,description,path}]}`.
-- `Enter` → `/custom-search?q=…`.
+- Typing queries `/searching/suggest?q=…` → JSON `{results: [{type,title,description,path}]}`.
+- `Enter` → `/searching?q=…`.
 - Suggestion types: `service`, `doctor`, `page`, `info` (mapped from node bundle in `SuggestController::mapType()`).
 
 ### Update
@@ -231,8 +231,9 @@ composer require mmitekk/drupal-custom-search:1.0.0
 
 ## API
 
-- `GET /custom-search/suggest?q=...` → `{"results": [{"type": "service|doctor|page|info", "title": "...", "description": "...", "path": "/node/1"}]}` (permission: `access content`)
-- `GET /custom-search?q=...` → HTML results page with pager (permission: `access content`)
+- `GET /searching/suggest?q=...` → `{"results": [{"type": "service|doctor|page|info", "title": "...", "description": "...", "path": "/node/1"}]}` (permission: `access content`)
+- `GET /searching?q=...` → HTML results page with pager (permission: `access content`)
+- `/search/node?keys=...` (core search) → 301 redirect to `/searching?q=...`
 
 ## Uninstall
 

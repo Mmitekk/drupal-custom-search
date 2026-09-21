@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Full search results page. Opened when the user presses Enter.
  *
- * Path: /custom-search?q=...
+ * Path: /searching?q=...
  */
 class ResultsController extends ControllerBase {
 

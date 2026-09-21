@@ -70,8 +70,8 @@ class CustomSearchBlock extends BlockBase implements ContainerFactoryPluginInter
       $results_url = Url::fromRoute('custom_search.results')->toString();
     }
     catch (\Exception) {
-      $suggest_url = '/custom-search/suggest';
-      $results_url = '/custom-search';
+      $suggest_url = '/searching/suggest';
+      $results_url = '/searching';
     }
 
     return [

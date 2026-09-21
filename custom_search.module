@@ -41,7 +41,7 @@ function custom_search_theme($existing, $type, $theme, $path): array {
 function custom_search_help($route_name, $route_match): ?string {
   switch ($route_name) {
     case 'help.page.custom_search':
-      return '<p>' . t('Footer live search: suggestions while typing, Enter opens the results page at /custom-search?q=…. Place the “Custom Search” block in the footer via Structure → Block layout.') . '</p>';
+      return '<p>' . t('Footer live search: suggestions while typing, Enter opens the results page at /searching?q=…. Place the “Custom Search” block in the footer via Structure → Block layout.') . '</p>';
 
     case 'custom_search.settings':
       return '<p>' . t('Configure placeholder, limits, content types. Descriptions in Russian and English are located in separate tabs below.') . '</p>';

@@ -5,7 +5,7 @@
  * Behavior:
  * - input → debounce 180ms → GET suggestUrl?q=… (JSON {results: [{type,title,description,path}]})
  * - dropdown grouped by type: service / doctor / page / info, with <mark> highlight
- * - ArrowDown/ArrowUp navigate, Enter opens active suggestion or /custom-search?q=…
+ * - ArrowDown/ArrowUp navigate, Enter opens active suggestion or /searching?q=…
  * - Escape closes, click outside closes, Ctrl/⌘+K focuses the field
  */
 
@@ -23,11 +23,11 @@
         }
 
         var suggestUrl = input.getAttribute('data-suggest-url') ||
-          (Drupal.settings && Drupal.settings.customSearch && Drupal.settings.customSearch.suggestUrl) ||
-          '/custom-search/suggest';
+          (window.drupalSettings && window.drupalSettings.customSearch && window.drupalSettings.customSearch.suggestUrl) ||
+          '/searching/suggest';
         var resultsUrl = input.getAttribute('data-results-url') ||
-          (Drupal.settings && Drupal.settings.customSearch && Drupal.settings.customSearch.resultsUrl) ||
-          '/custom-search';
+          (window.drupalSettings && window.drupalSettings.customSearch && window.drupalSettings.customSearch.resultsUrl) ||
+          '/searching';
         var minLength = parseInt(input.getAttribute('data-min-length') || '2', 10) || 2;
 
         var isMac = navigator.platform && navigator.platform.toUpperCase().indexOf('MAC') >= 0;
