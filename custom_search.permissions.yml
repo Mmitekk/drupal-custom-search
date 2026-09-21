@@ -1,4 +1,4 @@
 administer custom search:
   title: 'Administer Custom Search'
-  description: 'Manage Custom Search (inpramed-style) settings.'
+  description: 'Manage Custom Search settings.'
   restrict access: true

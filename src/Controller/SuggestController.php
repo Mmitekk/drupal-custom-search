@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Returns JSON suggestions for the live search dropdown.
  *
- * Mimics inpramed.ru: GET /custom-search/suggest?q=... returns:
+ * GET /custom-search/suggest?q=... returns:
  * { "results": [{ "type": "service|doctor|page|info", "title": "...", "description": "...", "path": "/node/1" }] }
  */
 class SuggestController extends ControllerBase {

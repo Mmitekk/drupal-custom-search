@@ -1,8 +1,8 @@
 /**
  * @file
- * Inpramed-style live search: dropdown suggestions, keyboard nav, Enter → results page.
+ * Footer live search: dropdown suggestions, keyboard nav, Enter → results page.
  *
- * Behavior (mirrors https://inpramed.ru footer search):
+ * Behavior:
  * - input → debounce 180ms → GET suggestUrl?q=… (JSON {results: [{type,title,description,path}]})
  * - dropdown grouped by type: service / doctor / page / info, with <mark> highlight
  * - ArrowDown/ArrowUp navigate, Enter opens active suggestion or /custom-search?q=…

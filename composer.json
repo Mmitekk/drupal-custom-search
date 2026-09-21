@@ -1,6 +1,6 @@
 {
   "name": "mmitekk/drupal-custom-search",
-  "description": "Custom Search for Drupal 10 — footer search with live suggestions (like inpramed.ru) and a full results page. Enter opens the results page.",
+  "description": "Custom Search for Drupal 10/11 — footer search with live suggestions and a full results page. Enter opens the results page.",
   "type": "drupal-module",
   "license": "GPL-2.0-or-later",
   "keywords": ["drupal", "search", "autocomplete", "custom-search"],

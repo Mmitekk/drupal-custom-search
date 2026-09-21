@@ -9,14 +9,14 @@ use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides a "Custom Search" block (inpramed-style footer search).
+ * Provides a "Custom Search" block (footer live search).
  *
  * Place it in the footer: input with live suggestions, Enter opens
  * the full results page.
  *
  * @Block(
  *   id = "custom_search_block",
- *   admin_label = @Translation("Custom Search (inpramed-style)"),
+ *   admin_label = @Translation("Custom Search"),
  *   category = @Translation("Search")
  * )
  */
@@ -62,18 +62,30 @@ class CustomSearchBlock extends BlockBase implements ContainerFactoryPluginInter
     $placeholder = $this->configuration['placeholder_override'] ?: ($config->get('placeholder') ?: $this->t('Search the site…'));
     $minLength = (int) $config->get('min_length') ?: 2;
 
+    // Resolve routable URLs, but never break the page if the router is
+    // temporarily stale (e.g. right after enabling the module): fall back
+    // to plain paths in that case.
+    try {
+      $suggest_url = Url::fromRoute('custom_search.suggest')->toString();
+      $results_url = Url::fromRoute('custom_search.results')->toString();
+    }
+    catch (\Exception) {
+      $suggest_url = '/custom-search/suggest';
+      $results_url = '/custom-search';
+    }
+
     return [
       '#theme' => 'custom_search_block',
       '#placeholder' => $placeholder,
-      '#suggest_url' => Url::fromRoute('custom_search.suggest')->toString(),
-      '#results_url' => Url::fromRoute('custom_search.results')->toString(),
+      '#suggest_url' => $suggest_url,
+      '#results_url' => $results_url,
       '#min_length' => $minLength,
       '#attached' => [
         'library' => ['custom_search/search'],
         'drupalSettings' => [
           'customSearch' => [
-            'suggestUrl' => Url::fromRoute('custom_search.suggest')->toString(),
-            'resultsUrl' => Url::fromRoute('custom_search.results')->toString(),
+            'suggestUrl' => $suggest_url,
+            'resultsUrl' => $results_url,
             'minLength' => $minLength,
           ],
         ],
