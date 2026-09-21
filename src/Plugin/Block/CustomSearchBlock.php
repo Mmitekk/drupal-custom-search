@@ -82,13 +82,14 @@ class CustomSearchBlock extends BlockBase implements ContainerFactoryPluginInter
       $results_url = '/searching';
     }
 
-    return [
+    $build = [
       '#theme' => 'custom_search_block',
       '#placeholder' => $placeholder,
       '#suggest_url' => $suggest_url,
       '#results_url' => $results_url,
       '#min_length' => $minLength,
-      '#sticky' => !empty($this->configuration['sticky']),
+      // Existing placements predate the sticky option: default them to ON.
+      '#sticky' => $this->configuration['sticky'] ?? TRUE,
       '#attached' => [
         'library' => ['custom_search/search'],
         'drupalSettings' => [
@@ -103,6 +104,34 @@ class CustomSearchBlock extends BlockBase implements ContainerFactoryPluginInter
         'contexts' => ['user.permissions', 'languages'],
       ],
     ];
+
+    // Inline the critical assets as well, so the block looks and works even
+    // when the library discovery cache is stale (the library above stays as
+    // the primary path for healthy sites; once() guards double init).
+    $module_root = dirname(__DIR__, 3);
+    $css_file = $module_root . '/css/custom-search.css';
+    if (is_readable($css_file)) {
+      $build['#attached']['html_head'][] = [
+        [
+          '#tag' => 'style',
+          '#value' => (string) file_get_contents($css_file),
+        ],
+        'custom_search_inline_css',
+      ];
+    }
+    $js_file = $module_root . '/js/custom-search.js';
+    if (is_readable($js_file)) {
+      // Deferred via DOMContentLoaded so Drupal/once already exist.
+      $build['#attached']['html_head'][] = [
+        [
+          '#tag' => 'script',
+          '#value' => 'window.addEventListener("DOMContentLoaded",function(){' . (string) file_get_contents($js_file) . '});',
+        ],
+        'custom_search_inline_js',
+      ];
+    }
+
+    return $build;
   }
 
   protected function getModuleConfig() {
