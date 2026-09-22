@@ -35,13 +35,22 @@
           kbd.textContent = isMac ? '⌘' : 'Ctrl';
         }
 
-        var CAT_LABELS = { service: 'Services', doctor: 'Doctors', page: 'Pages', info: 'Info' };
+        var RU = false;
         try {
-          var lang = document.documentElement.lang || 'en';
-          if (lang.indexOf('ru') === 0) {
-            CAT_LABELS = { service: 'Услуги', doctor: 'Врачи', page: 'Разделы', info: 'Инфо' };
-          }
+          RU = (document.documentElement.lang || 'en').indexOf('ru') === 0;
         } catch (e) { /* ignore */ }
+        var CAT_LABELS = RU
+          ? { service: 'Услуги', doctor: 'Врачи', page: 'Разделы', info: 'Инфо' }
+          : { service: 'Services', doctor: 'Doctors', page: 'Pages', info: 'Info' };
+        var L = RU
+          ? { nav: '↑↓ выбор', all: 'Enter → все результаты', close: 'Esc закрыть' }
+          : { nav: '↑↓ navigate', all: 'Enter → all results', close: 'Esc close' };
+        function emptyText(qRaw) {
+          if (RU) {
+            return 'Ничего не найдено по запросу «' + esc(qRaw) + '»';
+          }
+          return 'Nothing found for &lt;' + esc(qRaw) + '&gt;';
+        }
 
         var activeIdx = -1;
         var debounceTimer = null;
@@ -91,7 +100,7 @@
           var q = norm(qRaw);
           activeIdx = -1;
           if (!out.length) {
-            box.innerHTML = '<div class="cs-empty">Nothing found for &lt;' + esc(qRaw) + '&gt;</div>';
+            box.innerHTML = '<div class="cs-empty">' + emptyText(qRaw) + '</div>';
             box.classList.add('show');
             return;
           }
@@ -118,7 +127,7 @@
                 '<span class="cs-arrow">›</span></a>';
             });
           });
-          html += '<div class="cs-foot"><span>↑↓ navigate</span><span>Enter → all results</span><span>Esc close</span></div>';
+          html += '<div class="cs-foot"><span>' + L.nav + '</span><span>' + L.all + '</span><span>' + L.close + '</span></div>';
           box.innerHTML = html;
           box.classList.add('show');
           box.querySelectorAll('a').forEach(function (a) {

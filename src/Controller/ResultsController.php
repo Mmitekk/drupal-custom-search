@@ -178,6 +178,9 @@ class ResultsController extends ControllerBase {
     $text = '';
     if ($node->hasField('body') && !$node->get('body')->isEmpty()) {
       $text = strip_tags((string) $node->get('body')->value);
+      // Decode entities (&nbsp; etc.) so they render as text, not as code.
+      $text = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+      $text = str_replace("\xC2\xA0", ' ', $text);
       $text = trim(preg_replace('/\s+/u', ' ', $text));
     }
     if ($text === '') {

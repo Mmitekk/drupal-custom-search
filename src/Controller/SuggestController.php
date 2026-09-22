@@ -149,6 +149,10 @@ class SuggestController extends ControllerBase {
   protected function buildDescription(NodeInterface $node): string {
     if ($node->hasField('body') && !$node->get('body')->isEmpty()) {
       $text = strip_tags((string) $node->get('body')->value);
+      // Decode entities (&nbsp; etc.) so they render as text, not as code,
+      // then normalize whitespace.
+      $text = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+      $text = str_replace("\xC2\xA0", ' ', $text);
       $text = trim(preg_replace('/\s+/u', ' ', $text));
       if (mb_strlen($text) > 140) {
         $text = mb_substr($text, 0, 140) . '…';
