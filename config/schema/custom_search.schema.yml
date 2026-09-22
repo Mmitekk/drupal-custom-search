@@ -46,3 +46,15 @@ custom_search.settings:
     style_highlight:
       type: string
       label: 'Match highlight background'
+    style_radius_buttons:
+      type: integer
+      label: 'Border radius, buttons and inputs'
+    style_radius_cards:
+      type: integer
+      label: 'Border radius, cards and dropdown'
+    style_shadow:
+      type: string
+      label: 'Shadows preset'
+    style_button_size:
+      type: string
+      label: 'Results page button size'

@@ -169,6 +169,41 @@ class SettingsForm extends ConfigFormBase {
       '#title' => $this->t('Match highlight background (<mark>)'),
       '#default_value' => $config->get('style_highlight') ?: '#fde3ea',
     ];
+    $form['style']['style_radius_buttons'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Border radius, buttons and inputs (px)'),
+      '#default_value' => $config->get('style_radius_buttons') ?? 10,
+      '#min' => 0,
+      '#max' => 30,
+    ];
+    $form['style']['style_radius_cards'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Border radius, cards and dropdown (px)'),
+      '#default_value' => $config->get('style_radius_cards') ?? 14,
+      '#min' => 0,
+      '#max' => 30,
+    ];
+    $form['style']['style_shadow'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Shadows (cards, dropdown, sticky bar)'),
+      '#options' => [
+        'none' => $this->t('None'),
+        'soft' => $this->t('Soft'),
+        'standard' => $this->t('Standard'),
+        'strong' => $this->t('Strong'),
+      ],
+      '#default_value' => $config->get('style_shadow') ?: 'standard',
+    ];
+    $form['style']['style_button_size'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Results page button size'),
+      '#options' => [
+        's' => $this->t('S (small)'),
+        'm' => $this->t('M (medium)'),
+        'l' => $this->t('L (large)'),
+      ],
+      '#default_value' => $config->get('style_button_size') ?: 'm',
+    ];
 
     return parent::buildForm($form, $form_state);
   }
@@ -192,6 +227,10 @@ class SettingsForm extends ConfigFormBase {
       ->set('style_dropdown_bg', $form_state->getValue('style_dropdown_bg'))
       ->set('style_text', $form_state->getValue('style_text'))
       ->set('style_highlight', $form_state->getValue('style_highlight'))
+      ->set('style_radius_buttons', max(0, min(30, (int) $form_state->getValue('style_radius_buttons'))))
+      ->set('style_radius_cards', max(0, min(30, (int) $form_state->getValue('style_radius_cards'))))
+      ->set('style_shadow', in_array($form_state->getValue('style_shadow'), ['none', 'soft', 'standard', 'strong'], TRUE) ? $form_state->getValue('style_shadow') : 'standard')
+      ->set('style_button_size', in_array($form_state->getValue('style_button_size'), ['s', 'm', 'l'], TRUE) ? $form_state->getValue('style_button_size') : 'm')
       ->save();
     parent::submitForm($form, $form_state);
   }

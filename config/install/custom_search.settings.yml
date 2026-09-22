@@ -12,3 +12,7 @@ style_accent: '#ea184f'
 style_dropdown_bg: '#ffffff'
 style_text: '#4c6767'
 style_highlight: '#fde3ea'
+style_radius_buttons: 10
+style_radius_cards: 14
+style_shadow: 'standard'
+style_button_size: 'm'

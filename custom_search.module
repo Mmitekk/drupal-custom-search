@@ -26,6 +26,7 @@ function custom_search_theme($existing, $type, $theme, $path): array {
       'variables' => [
         'q' => '',
         'placeholder' => NULL,
+        'button_size' => 'm',
       ],
       'template' => 'custom-search-results-form',
     ],

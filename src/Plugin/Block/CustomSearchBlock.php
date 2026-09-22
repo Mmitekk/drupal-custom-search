@@ -159,8 +159,17 @@ class CustomSearchBlock extends BlockBase implements ContainerFactoryPluginInter
    * Builds a sanitized :root CSS variables string from style settings.
    */
   protected function styleVars(): string {
-    $config = $this->getModuleConfig();
-    $defaults = [
+    return self::buildStyleVars($this->getModuleConfig());
+  }
+
+  /**
+   * Builds sanitized :root CSS variables from the given config object.
+   *
+   * @param \Drupal\Core\Config\ImmutableConfig $config
+   *   The custom_search.settings config object.
+   */
+  public static function buildStyleVars($config): string {
+    $vars = [
       '--cs-accent' => '#ea184f',
       '--cs-dropdown-bg' => '#ffffff',
       '--cs-text' => '#4c6767',
@@ -175,14 +184,57 @@ class CustomSearchBlock extends BlockBase implements ContainerFactoryPluginInter
     foreach ($map as $key => $var) {
       $value = $config->get($key);
       if (is_string($value) && preg_match('/^#[0-9a-fA-F]{6}$/', $value)) {
-        $defaults[$var] = $value;
+        $vars[$var] = $value;
       }
     }
+    $radius_btn = (int) ($config->get('style_radius_buttons') ?? 10);
+    $vars['--cs-radius-btn'] = max(0, min(30, $radius_btn)) . 'px';
+    $radius_card = (int) ($config->get('style_radius_cards') ?? 14);
+    $vars['--cs-radius-card'] = max(0, min(30, $radius_card)) . 'px';
+    foreach (self::shadowPreset((string) ($config->get('style_shadow') ?: 'standard')) as $var => $value) {
+      $vars[$var] = $value;
+    }
     $out = ':root{';
-    foreach ($defaults as $var => $value) {
+    foreach ($vars as $var => $value) {
       $out .= $var . ':' . $value . ';';
     }
     return $out . '}';
+  }
+
+  /**
+   * Maps a shadow preset name to CSS box-shadow values (whitelisted).
+   *
+   * @return array
+   *   CSS variable name => box-shadow value.
+   */
+  public static function shadowPreset(string $name): array {
+    $presets = [
+      'none' => [
+        '--cs-shadow-card' => 'none',
+        '--cs-shadow-card-hover' => 'none',
+        '--cs-shadow-drop' => 'none',
+        '--cs-shadow-bar' => 'none',
+      ],
+      'soft' => [
+        '--cs-shadow-card' => '0 2px 8px -6px rgba(6,44,44,.18)',
+        '--cs-shadow-card-hover' => '0 6px 16px -10px rgba(6,44,44,.22)',
+        '--cs-shadow-drop' => '0 12px 30px -18px rgba(6,44,44,.30)',
+        '--cs-shadow-bar' => '0 -6px 18px -12px rgba(0,0,0,.20)',
+      ],
+      'standard' => [
+        '--cs-shadow-card' => 'none',
+        '--cs-shadow-card-hover' => '0 8px 20px -14px rgba(6,44,44,.25)',
+        '--cs-shadow-drop' => '0 24px 60px -28px rgba(6,44,44,.45)',
+        '--cs-shadow-bar' => '0 -10px 30px -18px rgba(0,0,0,.25)',
+      ],
+      'strong' => [
+        '--cs-shadow-card' => '0 6px 18px -10px rgba(6,44,44,.35)',
+        '--cs-shadow-card-hover' => '0 16px 40px -18px rgba(6,44,44,.45)',
+        '--cs-shadow-drop' => '0 32px 80px -28px rgba(6,44,44,.55)',
+        '--cs-shadow-bar' => '0 -14px 44px -18px rgba(0,0,0,.45)',
+      ],
+    ];
+    return $presets[$name] ?? $presets['standard'];
   }
 
 }

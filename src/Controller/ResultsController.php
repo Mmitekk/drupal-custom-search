@@ -80,6 +80,7 @@ class ResultsController extends ControllerBase {
       '#theme' => 'custom_search_results_form',
       '#q' => $q,
       '#placeholder' => $config->get('placeholder') ?: 'Search…',
+      '#button_size' => in_array($config->get('style_button_size'), ['s', 'm', 'l'], TRUE) ? $config->get('style_button_size') : 'm',
     ];
 
     if ($q === '') {
@@ -238,29 +239,7 @@ class ResultsController extends ControllerBase {
    *   The custom_search.settings config object.
    */
   protected function styleVars($config): string {
-    $defaults = [
-      '--cs-accent' => '#ea184f',
-      '--cs-dropdown-bg' => '#ffffff',
-      '--cs-text' => '#4c6767',
-      '--cs-highlight' => '#fde3ea',
-    ];
-    $map = [
-      'style_accent' => '--cs-accent',
-      'style_dropdown_bg' => '--cs-dropdown-bg',
-      'style_text' => '--cs-text',
-      'style_highlight' => '--cs-highlight',
-    ];
-    foreach ($map as $key => $var) {
-      $value = $config->get($key);
-      if (is_string($value) && preg_match('/^#[0-9a-fA-F]{6}$/', $value)) {
-        $defaults[$var] = $value;
-      }
-    }
-    $out = ':root{';
-    foreach ($defaults as $var => $value) {
-      $out .= $var . ':' . $value . ';';
-    }
-    return $out . '}';
+    return \Drupal\custom_search\Plugin\Block\CustomSearchBlock::buildStyleVars($config);
   }
 
 }

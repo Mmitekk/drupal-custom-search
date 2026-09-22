@@ -98,7 +98,7 @@ composer show mmitekk/drupal-custom-search
 - Таб **«Main settings»**: плейсхолдер, мин. длина запроса, лимиты подсказок/выдачи, типы материалов, показ метки типа.
 - Таб **«Описание (RU)»**: описание + заголовок выдачи (RU) + текст «ничего не найдено» (RU, `@q` = запрос).
 - Таб **«Description (EN)»**: то же на английском.
-- Таб **«Оформление (Style)»**: цвета акцента, фона подсказок, текста и подсветки совпадений (применяются к подсказкам и странице выдачи).
+- Таб **«Оформление (Style)»**: цвета акцента, фона подсказок, текста и подсветки совпадений, скругления кнопок/карточек, тени, размер кнопки (применяются к подсказкам и странице выдачи).
 
 ### Использование
 
@@ -208,7 +208,7 @@ It should report `versions: 1.0.0` (or newer), **not** `dev-main`.
 - **Main settings** tab: placeholder, min length, suggestion/results limits, bundles, type label.
 - **Описание (RU)** tab: Russian description + results header + “nothing found” text (`@q` = query).
 - **Description (EN)** tab: the same in English.
-- **Оформление (Style)** tab: accent, dropdown background, text and match-highlight colors (applied to suggestions and results).
+- **Оформление (Style)** tab: accent, dropdown background, text and match-highlight colors, button/card radius, shadows, button size (applied to suggestions and results).
 
 ### Usage
 
