@@ -1,12 +1,12 @@
 {
   "name": "mmitekk/drupal-custom-search",
-  "description": "Custom Search for Drupal 10/11 — footer search with live suggestions and a full results page. Enter opens the results page.",
+  "description": "Custom Search for Drupal 9/10/11 — footer search with live suggestions and a full results page. Enter opens the results page.",
   "type": "drupal-module",
   "license": "GPL-2.0-or-later",
   "keywords": ["drupal", "search", "autocomplete", "custom-search"],
   "require": {
-    "php": ">=8.1",
-    "drupal/core": "^10 || ^11"
+    "php": ">=7.4",
+    "drupal/core": "^9.2 || ^10 || ^11"
   },
   "minimum-stability": "stable",
   "prefer-stable": true,

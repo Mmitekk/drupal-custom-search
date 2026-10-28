@@ -77,7 +77,7 @@ class CustomSearchBlock extends BlockBase implements ContainerFactoryPluginInter
       $suggest_url = Url::fromRoute('custom_search.suggest')->toString();
       $results_url = Url::fromRoute('custom_search.results')->toString();
     }
-    catch (\Exception) {
+    catch (\Exception $e) {
       $suggest_url = '/searching/suggest';
       $results_url = '/searching';
     }
@@ -144,7 +144,7 @@ class CustomSearchBlock extends BlockBase implements ContainerFactoryPluginInter
         'custom_search_vars',
       ];
     }
-    catch (\Exception) {
+    catch (\Exception $e) {
       // Discovery/request unavailable (e.g. CLI render): library above stays.
     }
 

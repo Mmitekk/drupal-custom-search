@@ -66,7 +66,7 @@ class ResultsController extends ControllerBase {
         'custom_search_ext_css',
       ];
     }
-    catch (\Exception) {
+    catch (\Exception $e) {
       // Discovery/request unavailable: library above stays.
     }
     $build['#attached']['html_head'][] = [
@@ -112,7 +112,7 @@ class ResultsController extends ControllerBase {
     try {
       $ids = $query->execute();
     }
-    catch (\Exception) {
+    catch (\Exception $e) {
       // Fallback to title-only search (e.g. when no bundle has a body field).
       \Drupal::logger('custom_search')->warning('Full-text results query failed, falling back to title search for "@q".', ['@q' => $q]);
       $fallback = $storage->getQuery()
@@ -127,7 +127,7 @@ class ResultsController extends ControllerBase {
       try {
         $ids = $fallback->execute();
       }
-      catch (\Exception) {
+      catch (\Exception $e) {
         $ids = [];
       }
     }
@@ -141,7 +141,7 @@ class ResultsController extends ControllerBase {
       try {
         $url = $node->toUrl();
       }
-      catch (\Exception) {
+      catch (\Exception $e) {
         continue;
       }
       $items[] = [

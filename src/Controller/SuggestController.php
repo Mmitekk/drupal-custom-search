@@ -53,7 +53,7 @@ class SuggestController extends ControllerBase {
       try {
         $url = $node->toUrl()->toString();
       }
-      catch (\Exception) {
+      catch (\Exception $e) {
         continue;
       }
       $results[] = [
@@ -115,7 +115,7 @@ class SuggestController extends ControllerBase {
       try {
         $ids = $fallback->execute();
       }
-      catch (\Exception) {
+      catch (\Exception $e) {
         return [];
       }
     }

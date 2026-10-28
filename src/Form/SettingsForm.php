@@ -57,6 +57,7 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'details',
       '#title' => $this->t('Main settings'),
       '#group' => 'tabs',
+      '#weight' => 0,
       '#open' => TRUE,
     ];
     $form['main']['placeholder'] = [
@@ -103,10 +104,11 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'details',
       '#title' => $this->t('Описание (RU)'),
       '#group' => 'tabs',
+      '#weight' => 1,
     ];
     $form['description_ru']['about_ru'] = [
       '#type' => 'item',
-      '#markup' => $this->t('<p><strong>Custom Search</strong> — поиск для Drupal 10/11. Блок ставится в подвал сайта: при вводе запроса под полем появляются подсказки (название + описание + категория), стрелками ↑/↓ можно выбрать вариант, <strong>Enter</strong> открывает страницу выдачи <code>/searching?q=…</code>.</p><p>Горячие клавиши: <kbd>Ctrl/⌘ + K</kbd> — фокус на поиске, <kbd>Esc</kbd> — закрыть подсказки.</p>'),
+      '#markup' => $this->t('<p><strong>Custom Search</strong> — поиск для Drupal 9/10/11. Блок ставится в подвал сайта: при вводе запроса под полем появляются подсказки (название + описание + категория), стрелками ↑/↓ можно выбрать вариант, <strong>Enter</strong> открывает страницу выдачи <code>/searching?q=…</code>.</p><p>Горячие клавиши: <kbd>Ctrl/⌘ + K</kbd> — фокус на поиске, <kbd>Esc</kbd> — закрыть подсказки.</p>'),
     ];
     $form['description_ru']['header_ru'] = [
       '#type' => 'textfield',
@@ -125,10 +127,11 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'details',
       '#title' => $this->t('Description (EN)'),
       '#group' => 'tabs',
+      '#weight' => 2,
     ];
     $form['description_en']['about_en'] = [
       '#type' => 'item',
-      '#markup' => $this->t('<p><strong>Custom Search</strong> is a footer live search for Drupal 10/11. Place the block in the footer: as you type, a dropdown suggests pages (title + snippet + category), ↑/↓ picks a suggestion, <strong>Enter</strong> opens the results page <code>/searching?q=…</code>.</p><p>Shortcuts: <kbd>Ctrl/⌘ + K</kbd> focuses search, <kbd>Esc</kbd> closes suggestions.</p>'),
+      '#markup' => $this->t('<p><strong>Custom Search</strong> is a footer live search for Drupal 9/10/11. Place the block in the footer: as you type, a dropdown suggests pages (title + snippet + category), ↑/↓ picks a suggestion, <strong>Enter</strong> opens the results page <code>/searching?q=…</code>.</p><p>Shortcuts: <kbd>Ctrl/⌘ + K</kbd> focuses search, <kbd>Esc</kbd> closes suggestions.</p>'),
     ];
     $form['description_en']['header_en'] = [
       '#type' => 'textfield',
@@ -147,6 +150,7 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'details',
       '#title' => $this->t('Оформление (Style)'),
       '#group' => 'tabs',
+      '#weight' => 3,
       '#description' => $this->t('Colors of suggestion titles, links, badges, focus ring, buttons and match highlighting.'),
     ];
     $form['style']['style_accent'] = [
@@ -243,7 +247,7 @@ class SettingsForm extends ConfigFormBase {
         $options[$type->id()] = $type->label();
       }
     }
-    catch (\Exception) {
+    catch (\Exception $e) {
     }
     return $options;
   }

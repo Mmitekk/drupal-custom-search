@@ -1,11 +1,11 @@
-# Custom Search for Drupal 10
+# Custom Search for Drupal 9 / 10 / 11
 
-Drupal 10 module that adds a footer search with live suggestions: type a query → a dropdown suggests pages, press **Enter** → the full results page opens.
+Drupal 9/10/11 module that adds a footer search with live suggestions: type a query → a dropdown suggests pages, press **Enter** → the full results page opens.
 
 - **Machine name:** `custom_search`
 - **Composer package:** `mmitekk/drupal-custom-search`
 - **Type:** `drupal-module`
-- **Core:** Drupal `^10` (tested on 10.6.x, incl. 10.6.8), PHP `>= 8.1`
+- **Core:** Drupal `^9.2 || ^10 || ^11` (tested on 10.6.x, incl. 10.6.8), PHP `>= 7.4`
 - **Stable releases only:** install via tagged GitHub Releases (e.g. `^1.0`), no `dev-main` by default.
 
 > 🇷🇺 Русская инструкция — ниже. 🇬🇧 English instructions — below.
@@ -29,8 +29,11 @@ Drupal 10 module that adds a footer search with live suggestions: type a query �
 
 ### Требования
 
-- Drupal 10 (`^10`, проверено на 10.6.8)
-- PHP >= 8.1
+- Drupal `^9.2 || ^10 || ^11`
+  - Drupal 9: версии **9.2–9.5** (9.0 и 9.1 не поддерживаются — они давно вне поддержки и в них нет библиотеки `core/once`, на которой построен модуль).
+  - Drupal 10: все актуальные версии (проверено на 10.6.8).
+  - Drupal 11: все актуальные версии.
+- PHP >= 7.4 (Drupal 9 рассчитан на PHP 7.3–8.1, Drupal 10 — на PHP 8.1+, Drupal 11 — на PHP 8.3+)
 - Права: `access content` (поиск), `administer custom search` (настройки)
 
 ### Установка через Composer (стабильный релиз)
@@ -141,8 +144,11 @@ composer require mmitekk/drupal-custom-search:1.0.0
 
 ### Requirements
 
-- Drupal 10 (`^10`, verified on 10.6.8)
-- PHP >= 8.1
+- Drupal `^9.2 || ^10 || ^11`
+  - Drupal 9: versions **9.2–9.5** (9.0 and 9.1 are not supported — they are long out of support and lack the `core/once` library the module is built on).
+  - Drupal 10: all current versions (verified on 10.6.8).
+  - Drupal 11: all current versions.
+- PHP >= 7.4 (Drupal 9 targets PHP 7.3–8.1, Drupal 10 requires PHP 8.1+, Drupal 11 requires PHP 8.3+)
 - Permissions: `access content` (search), `administer custom search` (settings)
 
 ### Install via Composer (stable release)
