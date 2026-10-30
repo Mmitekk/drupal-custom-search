@@ -38,6 +38,63 @@ function custom_search_theme($existing, $type, $theme, $path): array {
 }
 
 /**
+ * Implements hook_simple_sitemap_links_alter().
+ *
+ * Keeps the search results page (/searching) out of the generated XML
+ * sitemaps no matter how the link got in — custom links, entity settings
+ * or any future generator. The page has no standalone value for search
+ * engines, and every indexed URL variant (?q=…) would be a duplicate.
+ *
+ * Compatible with simple_sitemap 3.x and 4.x: the second argument is a
+ * variant name in 3.x and a sitemap entity in 4.x, we do not rely on it.
+ */
+function custom_search_simple_sitemap_links_alter(array &$links, $variant): void {
+  custom_search_strip_search_links($links);
+}
+
+/**
+ * Implements hook_simple_sitemap_custom_links_alter().
+ *
+ * Same as above, for simple_sitemap 3.x, which filters custom links
+ * through a separate alter hook. In 4.x this hook is never invoked and
+ * the guard above does the job.
+ */
+function custom_search_simple_sitemap_custom_links_alter(array &$custom_links, $variant): void {
+  custom_search_strip_search_links($custom_links);
+}
+
+/**
+ * Removes /searching entries from a simple_sitemap link array.
+ *
+ * Works in place. Accepts both link shapes found in the wild:
+ * 4.x generated links ('meta' => ['path' => 'searching']) and 3.x custom
+ * links ('path' => '/searching').
+ *
+ * @param array $links
+ *   Links passed to an alter hook, modified by reference.
+ */
+function custom_search_strip_search_links(array &$links): void {
+  foreach ($links as $key => $link) {
+    if (!is_array($link)) {
+      continue;
+    }
+    $path = '';
+    if (isset($link['meta']['path']) && is_string($link['meta']['path'])) {
+      $path = $link['meta']['path'];
+    }
+    elseif (isset($link['path']) && is_string($link['path'])) {
+      $path = $link['path'];
+    }
+    elseif (isset($link['url']['path']) && is_string($link['url']['path'])) {
+      $path = $link['url']['path'];
+    }
+    if (trim($path, '/') === 'searching') {
+      unset($links[$key]);
+    }
+  }
+}
+
+/**
  * Implements hook_help().
  */
 function custom_search_help($route_name, $route_match): ?string {

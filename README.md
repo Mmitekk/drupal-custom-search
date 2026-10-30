@@ -96,6 +96,20 @@ composer show mmitekk/drupal-custom-search
 3. Перестройте кэш (`drush cr` или «Конфигурация → Производительность → Очистить все кэши») и ищите в списке по слову `Custom`.
 4. Ошибка вида `Could not delete .../default.settings.php` при `composer require` — это права на scaffold-файл, на установку модуля она не влияет.
 
+### Страница выдачи и тема сайта
+
+Страница `/searching` — обычный маршрут Drupal, который отдаёт render array, поэтому она **всегда рендерится внутри основного шаблона темы** (`html.html.twig` → `page.html.twig`) со всеми регионами и блоками. Отдельного «голого» шаблона у модуля нет.
+
+Если на выдаче пропали шапка/меню/подвал — значит, в вашей теме они не лежат в регионах: `page.html.twig` печатает пустые регионы, а вся обвязка сайта зашита в шаблонах конкретных страниц (например, `page--front.html.twig`, `page--node--N.html.twig`). Такую же «голую» страницу покажет и 404 — модуль тут ни при чём.
+
+Рецепт: скопируйте в шаблон темы файл `page--searching.html.twig` (ядро само подставляет suggestion `page__searching` для пути `/searching`) по образцу шаблона, где шапка/подвал зашиты, и замените основную область содержимого на `{{ page.content }}`.
+
+### Исключение из XML-карты сайта (simple_sitemap)
+
+Страница выдачи не должна попадать в sitemap: отдельной ценности для поисковиков она не несёт, а варианты `?q=…` — бесконечные дубли. Если установлен модуль [simple_sitemap](https://www.drupal.org/project/simple_sitemap) (3.x и 4.x), Custom Search **автоматически убирает `/searching`** из генерируемой карты на этапе генерации (hook_simple_sitemap_links_alter + hook_simple_sitemap_custom_links_alter) — даже если добавить её в custom links вручную.
+
+Дополнительно на `/searching` отдаётся `<meta name="robots" content="noindex, follow">`, чтобы поисковики не держали страницу в индексе.
+
 ### Настройки: `/admin/config/search/custom-search`
 
 - Таб **«Main settings»**: плейсхолдер, мин. длина запроса, лимиты подсказок/выдачи, типы материалов, показ метки типа.
@@ -208,6 +222,20 @@ It should report `versions: 1.0.0` (or newer), **not** `dev-main`.
    rm -rf web/modules/contrib/drupal-custom-search
    ```
 3. Rebuild the cache (`drush cr` or “Configuration → Performance → Clear all caches”) and search the list for `Custom`.
+
+### Results page and your theme
+
+`/searching` is a normal Drupal route returning a render array, so it **always renders inside the theme's main template** (`html.html.twig` → `page.html.twig`) with all regions and blocks. The module ships no bare-bones template of its own.
+
+If header/menu/footer are missing on the results page, your theme does not put them in regions: `page.html.twig` prints empty regions while the site chrome is hardcoded in page-specific templates (`page--front.html.twig`, `page--node--N.html.twig`, …). The 404 page will look equally bare — the module is not the cause.
+
+Recipe: add a `page--searching.html.twig` file to your theme (core applies the `page__searching` suggestion for the `/searching` path automatically), modelled on the template that has the chrome hardcoded, with the main content area swapped for `{{ page.content }}`.
+
+### Exclusion from the XML sitemap (simple_sitemap)
+
+Results pages should not be in the sitemap: no standalone value for search engines, and every `?q=…` variant is a duplicate. With [simple_sitemap](https://www.drupal.org/project/simple_sitemap) (3.x and 4.x) installed, Custom Search **automatically removes `/searching`** from generated sitemaps (hook_simple_sitemap_links_alter + hook_simple_sitemap_custom_links_alter) — even if the link is added to custom links manually.
+
+Additionally, `/searching` serves `<meta name="robots" content="noindex, follow">` so search engines drop it from the index.
 
 ### Settings: `/admin/config/search/custom-search`
 

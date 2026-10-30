@@ -49,6 +49,19 @@ class ResultsController extends ControllerBase {
 
     $build = [];
     $build['#attached']['library'][] = 'custom_search/search';
+    // Search engines should not index results pages (endless ?q= variants
+    // are duplicate content). Pairs with the simple_sitemap exclusion in
+    // custom_search.module.
+    $build['#attached']['html_head'][] = [
+      [
+        '#tag' => 'meta',
+        '#attributes' => [
+          'name' => 'robots',
+          'content' => 'noindex, follow',
+        ],
+      ],
+      'custom_search_noindex',
+    ];
     // Direct stylesheet tag as well: it cannot be mangled by escaping and
     // does not depend on the library discovery cache.
     try {
