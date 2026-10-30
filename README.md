@@ -98,11 +98,18 @@ composer show mmitekk/drupal-custom-search
 
 ### Страница выдачи и тема сайта
 
-Страница `/searching` — обычный маршрут Drupal, который отдаёт render array, поэтому она **всегда рендерится внутри основного шаблона темы** (`html.html.twig` → `page.html.twig`) со всеми регионами и блоками. Отдельного «голого» шаблона у модуля нет.
+Страница `/searching` — обычный маршрут Drupal, который отдаёт render array, поэтому она **всегда рендерится внутри основного шаблона темы** (`html.html.twig` → `page.html.twig`) со всеми регионами и блоками. Отдельного «голого» шаблона у модуля нет; suggestion `page__searching` ядро подставляет автоматически.
 
-Если на выдаче пропали шапка/меню/подвал — значит, в вашей теме они не лежат в регионах: `page.html.twig` печатает пустые регионы, а вся обвязка сайта зашита в шаблонах конкретных страниц (например, `page--front.html.twig`, `page--node--N.html.twig`). Такую же «голую» страницу покажет и 404 — модуль тут ни при чём.
+Если на выдаче пропали шапка/меню/подвал, а `page--searching.html.twig` из `page.html.twig` ничего не изменил — значит, в вашей теме обвязка сайта **не в регионах** (регионы `page.header`/`page.footer` пустые на всех страницах, это видно и на 404), а зашита в **node-шаблоне** (`node--page.html.twig` / `node.html.twig` в `templates/` темы — признак: внутри есть разметка `.page-header`). Модуль не может подтянуть её сам: node-шаблон применяется только к нодам, а страница выдачи — не нода.
 
-Рецепт: скопируйте в шаблон темы файл `page--searching.html.twig` (ядро само подставляет suggestion `page__searching` для пути `/searching`) по образцу шаблона, где шапка/подвал зашиты, и замените основную область содержимого на `{{ page.content }}`.
+Рецепт (порядок важен):
+
+1. Откройте `templates/node--page.html.twig` вашей темы (или `node.html.twig` — файл, где есть `.page-header`).
+2. Создайте `templates/page--searching.html.twig` как копию этого файла, но вместо внутренностей ноды (`{{ content }}`, label и пр.) выведите `{{ page.content }}`. Шапка — всё до контента, подвал — всё после.
+3. Очистите кэш (`drush cr` или Конфигурация → Производительность → «Очистить все кэши») — без этого twig не увидит новый файл.
+4. Проверка, что файл подхватился: временно вставьте в шаблон маркер `TEST-SEARCHING` и обновите `/searching`. Маркера нет → файл не там или кэш не сброшен.
+
+Если обвязка у вас в регионах — ничего из этого не нужно, страница уже рендерится в `page.html.twig` со всеми блоками.
 
 ### Исключение из XML-карты сайта (simple_sitemap)
 
@@ -225,11 +232,18 @@ It should report `versions: 1.0.0` (or newer), **not** `dev-main`.
 
 ### Results page and your theme
 
-`/searching` is a normal Drupal route returning a render array, so it **always renders inside the theme's main template** (`html.html.twig` → `page.html.twig`) with all regions and blocks. The module ships no bare-bones template of its own.
+`/searching` is a normal Drupal route returning a render array, so it **always renders inside the theme's main template** (`html.html.twig` → `page.html.twig`) with all regions and blocks. The module ships no bare-bones template of its own; core applies the `page__searching` suggestion automatically.
 
-If header/menu/footer are missing on the results page, your theme does not put them in regions: `page.html.twig` prints empty regions while the site chrome is hardcoded in page-specific templates (`page--front.html.twig`, `page--node--N.html.twig`, …). The 404 page will look equally bare — the module is not the cause.
+If header/menu/footer are missing and a `page--searching.html.twig` copied from `page.html.twig` changed nothing, your theme keeps the site chrome **outside regions** (the `page.header`/`page.footer` regions are empty on every page — the 404 page shows the same) and hardcodes it in the **node template** (`node--page.html.twig` / `node.html.twig` in the theme's `templates/` — the tell-tale sign is `.page-header` markup inside). The module cannot pull it in: node templates apply to nodes only, and the results page is not a node.
 
-Recipe: add a `page--searching.html.twig` file to your theme (core applies the `page__searching` suggestion for the `/searching` path automatically), modelled on the template that has the chrome hardcoded, with the main content area swapped for `{{ page.content }}`.
+Recipe (in this order):
+
+1. Open `templates/node--page.html.twig` of your theme (or `node.html.twig` — the file containing `.page-header`).
+2. Create `templates/page--searching.html.twig` as a copy of that file, but replace the node innards (`{{ content }}`, label, …) with `{{ page.content }}`. Header = everything before the content, footer = everything after.
+3. Clear caches (`drush cr` or Configuration → Performance → "Clear all caches") — Twig will not see the new file otherwise.
+4. Sanity check: temporarily put a `TEST-SEARCHING` marker into the template and reload `/searching`. No marker → wrong location or cache not cleared.
+
+If your theme keeps the chrome in regions, none of this is needed — the page already renders inside `page.html.twig` with all blocks.
 
 ### Exclusion from the XML sitemap (simple_sitemap)
 
