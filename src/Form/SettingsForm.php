@@ -87,6 +87,12 @@ class SettingsForm extends ConfigFormBase {
       '#min' => 1,
       '#max' => 50,
     ];
+    $form['main']['results_page_url'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Results page URL (where the footer search navigates)'),
+      '#default_value' => $config->get('results_page_url'),
+      '#description' => $this->t('Path of the page holding the "Custom Search results" block, e.g. /poisk. Leave empty to use the default /searching route. Use a regular page here when your theme keeps the header/footer in node templates.'),
+    ];
     $form['main']['bundles'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Content types to search (empty = all)'),
@@ -221,6 +227,7 @@ class SettingsForm extends ConfigFormBase {
       ->set('min_length', (int) $form_state->getValue('min_length'))
       ->set('limit', (int) $form_state->getValue('limit'))
       ->set('results_limit', (int) $form_state->getValue('results_limit'))
+      ->set('results_page_url', self::normalizeResultsPageUrl($form_state->getValue('results_page_url')))
       ->set('bundles', $form_state->getValue('bundles'))
       ->set('show_type_label', (bool) $form_state->getValue('show_type_label'))
       ->set('header_ru', $form_state->getValue('header_ru'))
@@ -250,6 +257,17 @@ class SettingsForm extends ConfigFormBase {
     catch (\Exception $e) {
     }
     return $options;
+  }
+
+  /**
+   * Normalizes the results page URL: trim, ensure a leading slash.
+   */
+  protected static function normalizeResultsPageUrl($value): string {
+    $value = trim((string) $value);
+    if ($value !== '' && $value[0] !== '/') {
+      $value = '/' . $value;
+    }
+    return $value;
   }
 
 }

@@ -111,6 +111,16 @@ composer show mmitekk/drupal-custom-search
 
 Если обвязка у вас в регионах — ничего из этого не нужно, страница уже рендерится в `page.html.twig` со всеми блоками.
 
+### Вариант без правок темы: блок «Custom Search results»
+
+Когда каркас сайта зашит в node-шаблоны и трогать их не хочется, выдачу можно вынести на **обычную страницу-ноду** — она получит полный каркас (шапку, город, подвал), как все страницы:
+
+1. Создайте страницу «Поиск» с адресом, например, `/poisk`.
+2. `/admin/structure/block` → разместите блок **«Custom Search results»** в регионе содержимого, видимость — только эта страница. Блок рисует форму (отправляется на текущий адрес), выдачу и пагинацию.
+3. Чтобы Enter из футерного поиска вёл на эту страницу: `/admin/config/search/custom-search` → таб **«Main settings»** → поле **«Страница выдачи (URL)»** → `/poisk`. Пусто — работает стандартный `/searching`.
+
+Страницы с непустым запросом (`?q=…`) по-прежнему отдают `noindex, follow`; страница без запроса остаётся обычной.
+
 ### Исключение из XML-карты сайта (simple_sitemap)
 
 Страница выдачи не должна попадать в sitemap: отдельной ценности для поисковиков она не несёт, а варианты `?q=…` — бесконечные дубли. Если установлен модуль [simple_sitemap](https://www.drupal.org/project/simple_sitemap) (3.x и 4.x), Custom Search **автоматически убирает `/searching`** из генерируемой карты на этапе генерации (hook_simple_sitemap_links_alter + hook_simple_sitemap_custom_links_alter) — даже если добавить её в custom links вручную.
@@ -244,6 +254,16 @@ Recipe (in this order):
 4. Sanity check: temporarily put a `TEST-SEARCHING` marker into the template and reload `/searching`. No marker → wrong location or cache not cleared.
 
 If your theme keeps the chrome in regions, none of this is needed — the page already renders inside `page.html.twig` with all blocks.
+
+### No-theme-edit option: the "Custom Search results" block
+
+When the site chrome is hardcoded in node templates and you'd rather not touch them, move the results onto a **regular page node** — it gets the full chrome (header, city switcher, footer) like every other page:
+
+1. Create a "Search" page, e.g. at `/poisk`.
+2. `/admin/structure/block` → place the **"Custom Search results"** block into the content region, visibility limited to that page. The block renders the form (submits to the current path), results and the pager.
+3. To point the footer search at this page: `/admin/config/search/custom-search` → **Main settings** tab → **"Results page URL"** → `/poisk`. Leave empty for the default `/searching` route.
+
+Pages with a non-empty query (`?q=…`) still serve `noindex, follow`; the page without a query stays a normal indexable page.
 
 ### Exclusion from the XML sitemap (simple_sitemap)
 

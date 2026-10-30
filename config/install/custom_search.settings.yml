@@ -2,6 +2,7 @@ placeholder: 'Поиск по сайту…'
 min_length: 2
 limit: 8
 results_limit: 10
+results_page_url: ''
 bundles: {  }
 empty_text_ru: 'Ничего не найдено по запросу «@q». Попробуйте изменить запрос.'
 empty_text_en: 'Nothing found for "@q". Try a different query.'

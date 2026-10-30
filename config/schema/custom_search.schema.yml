@@ -14,6 +14,9 @@ custom_search.settings:
     results_limit:
       type: integer
       label: 'Results per page'
+    results_page_url:
+      type: string
+      label: 'Results page URL (footer search navigation target)'
     bundles:
       type: sequence
       label: 'Allowed content types'

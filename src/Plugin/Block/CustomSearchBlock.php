@@ -72,14 +72,17 @@ class CustomSearchBlock extends BlockBase implements ContainerFactoryPluginInter
 
     // Resolve routable URLs, but never break the page if the router is
     // temporarily stale (e.g. right after enabling the module): fall back
-    // to plain paths in that case.
+    // to plain paths in that case. The results URL can be overridden in the
+    // settings so Enter may lead to a page holding the results block
+    // (useful on themes where the site chrome lives in node templates).
+    $results_url_override = trim((string) $config->get('results_page_url'));
     try {
       $suggest_url = Url::fromRoute('custom_search.suggest')->toString();
-      $results_url = Url::fromRoute('custom_search.results')->toString();
+      $results_url = $results_url_override !== '' ? $results_url_override : Url::fromRoute('custom_search.results')->toString();
     }
     catch (\Exception $e) {
       $suggest_url = '/searching/suggest';
-      $results_url = '/searching';
+      $results_url = $results_url_override !== '' ? $results_url_override : '/searching';
     }
 
     $build = [

@@ -1,4 +1,5 @@
-<form action="{{ path('custom_search.results') }}" method="get" role="search" class="custom-search-page-form">
+{# action: NULL = submit to the /searching route; '' = submit to the current page (results block). #}
+<form action="{{ action is null ? path('custom_search.results') : action }}" method="get" role="search" class="custom-search-page-form">
   <input type="text" name="q" value="{{ q }}" placeholder="{{ placeholder }}" aria-label="{{ placeholder }}" class="custom-search-page-form__input" />
   <button type="submit" class="custom-search-page-form__submit custom-search-page-form__submit--{{ button_size }}">{{ 'Search'|t }}</button>
 </form>
